@@ -1,12 +1,10 @@
 /* app.js */
 
 /*
-  Game Configuration and Global Variables
-  - Configurable letter count, letter frequencies, sample dictionary.
-  - For a full game, replace the sample dictionary with a comprehensive one.
+  Game Configuration (excluding the dictionary)
 */
 const config = {
-    letterCount: 20, // Configurable: can be set between 15-25
+    letterCount: 20, // Configurable: 15-25
     vowels: 'AEIOU',
     consonants: 'BCDFGHJKLMNPQRSTVWXYZ',
     letterFrequency: {
@@ -15,17 +13,38 @@ const config = {
       M: 2.41, N: 6.75, O: 7.51, P: 1.93, Q: 0.10, R: 5.99,
       S: 6.33, T: 9.06, U: 2.76, V: 0.98, W: 2.36, X: 0.15,
       Y: 1.97, Z: 0.07
-    },
-    // A sample dictionary for demonstration. Replace with a comprehensive dictionary for production.
-    dictionary: new Set(["HELLO", "WORLD", "WORD", "GAME", "SCRAMBLED", "TEST", "PLAYER", "JAVASCRIPT", "CODE"])
+    }
   };
+  
+  // Our global dictionary Set, loaded from words_alpha.txt
+  let dictionary = new Set();
+  
+  // Load the dictionary from the text file
+  function fetchDictionary() {
+    return fetch('words_alpha.txt')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load dictionary file: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(text => {
+        // Each line is one word; convert to uppercase
+        const lines = text.split('\n').map(word => word.trim().toUpperCase());
+        dictionary = new Set(lines);
+        console.log(`Dictionary loaded with ${dictionary.size} words.`);
+      })
+      .catch(error => {
+        console.error('Error fetching dictionary:', error);
+        alert('Failed to load dictionary. Please try again later.');
+      });
+  }
   
   let dailyLetters = [];
   let usedWords = [];
   
   /*
-    Utility function to pick a random letter.
-    - When weighted, letters are selected based on frequency.
+    Utility function to pick a random letter (weighted by frequency).
   */
   function getRandomLetter(weighted = true) {
     const letters = Object.keys(config.letterFrequency);
@@ -47,15 +66,13 @@ const config = {
   
   /*
     Generate the daily letter set.
-    - Ensures a minimum number of vowels (here at least 3).
-    - The letter count is configurable.
+    Ensures a minimum number of vowels (3).
   */
   function generateDailyLetters() {
     let letters = [];
     let vowelCount = 0;
     while (letters.length < config.letterCount) {
       let letter;
-      // Force use of a vowel until at least 3 vowels are in the set
       if (vowelCount < 3) {
         letter = config.vowels[Math.floor(Math.random() * config.vowels.length)];
       } else {
@@ -93,13 +110,12 @@ const config = {
   }
   
   /*
-    Validate a submitted word:
-      - Check it exists in the dictionary.
-      - Ensure it can be formed from the available daily letters.
+    Validate a submitted word by checking if it's in the dictionary
+    and if it can be formed from the available letters.
   */
   function validateWord(word) {
     word = word.toUpperCase();
-    if (!config.dictionary.has(word)) {
+    if (!dictionary.has(word)) {
       return false;
     }
     
@@ -123,8 +139,6 @@ const config = {
   
   /*
     Handle submission of a word.
-    - Validate, update the UI, and remove used letters.
-    - When all letters have been used, display the final score (word count).
   */
   function submitWord() {
     const wordInput = document.getElementById('wordInput');
@@ -139,7 +153,7 @@ const config = {
     
     usedWords.push(word.toUpperCase());
     
-    // Remove letters used in the word from the current letter set.
+    // Remove letters used in the word
     let tempLetters = dailyLetters.slice();
     for (let char of word.toUpperCase()) {
       let index = tempLetters.indexOf(char);
@@ -149,7 +163,7 @@ const config = {
     }
     dailyLetters = tempLetters;
     
-    // Update list of submitted words.
+    // Update list of submitted words
     const wordsList = document.getElementById('wordsList');
     const li = document.createElement('li');
     li.innerText = word.toUpperCase();
@@ -158,10 +172,11 @@ const config = {
     wordInput.value = '';
     updateLettersRemaining();
     
-    // Check if all letters have been used.
+    // Check if all letters have been used
     if (dailyLetters.length === 0) {
       const finalScore = calculateScore();
-      document.getElementById('gameScore').innerText = `Completed! You used ${finalScore} word(s) to use all letters.`;
+      document.getElementById('gameScore').innerText =
+        `Completed! You used ${finalScore} word(s) to use all letters.`;
       alert(`Congratulations! You've used all the letters in ${finalScore} word(s).`);
     }
   }
@@ -194,7 +209,7 @@ const config = {
       settingsModal.style.display = 'none';
     };
     
-    // Close modal when clicking outside of it.
+    // Close modal when clicking outside of it
     window.onclick = function(event) {
       if (event.target === instructionsModal) {
         instructionsModal.style.display = 'none';
@@ -207,16 +222,20 @@ const config = {
   
   /*
     Initialize the game.
-    - In a full implementation, the daily puzzle would be seeded by the current date.
+    1. Fetch the dictionary
+    2. Generate letters
+    3. Render UI
   */
   function initGame() {
-    dailyLetters = generateDailyLetters();
-    renderLetters();
-    setupModals();
-    // Additional initialization (timer, leaderboard integration, etc.) can be added here.
+    fetchDictionary().then(() => {
+      dailyLetters = generateDailyLetters();
+      renderLetters();
+      setupModals();
+      // Additional initialization...
+    });
   }
   
-  // Event Listeners for word submission.
+  // Event Listeners
   document.getElementById('submitWord').addEventListener('click', submitWord);
   document.getElementById('wordInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
@@ -224,6 +243,6 @@ const config = {
     }
   });
   
-  // Start game on page load.
+  // Start game on page load
   window.onload = initGame;
   
