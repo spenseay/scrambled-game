@@ -17,18 +17,16 @@
       <!-- Word Input Area -->
       <div class="input-area">
         <input type="text" id="wordInput" placeholder="Type your word here..." autofocus />
-        <button id="submitWord">Submit Word</button>
+        <button id="submitWord">Submit</button>
+      </div>
+      <!-- Game Information -->
+      <div class="game-info">
+        <p id="gameScore">Words: 0</p>
       </div>
       <!-- List of submitted words -->
       <div class="used-words">
         <h2>Your Words</h2>
         <ul id="wordsList"></ul>
-      </div>
-      <!-- Game Information -->
-      <div class="game-info">
-        <p id="lettersRemaining"></p>
-        <p id="gameScore"></p>
-        <p id="timerDisplay"></p>
       </div>
     </section>
     <footer>
@@ -42,8 +40,11 @@
         <span class="close" id="closeInstructions">&times;</span>
         <h2>How to Play</h2>
         <p>
-          Each day you’re given a new set of letters. Form valid English words using the letters.
-          The goal is to use ALL letters in as few words as possible. Each letter may only be used once per submission (unless it appears more than once).
+          Each day you're given a new set of letters. Form valid English words using the letters.
+          The goal is to use ALL letters in as few words as possible. Each letter may only be used once per submission.
+        </p>
+        <p>
+          Click the × button next to any word to remove it and return its letters to the available pool.
         </p>
       </div>
     </div>
@@ -54,9 +55,19 @@
         <span class="close" id="closeSettings">&times;</span>
         <h2>Settings</h2>
         <p>
-          Configure letter count and difficulty levels here. (For example: Easy – 15 letters, Medium – 20 letters, Hard – 25 letters.)
+          Configure letter count and difficulty levels here:
         </p>
-        <!-- Additional settings can be added here -->
+        <div>
+          <label for="letterCountSetting">Number of Letters:</label>
+          <select id="letterCountSetting">
+            <option value="15">Easy (15 letters)</option>
+            <option value="20" selected>Medium (20 letters)</option>
+            <option value="25">Hard (25 letters)</option>
+          </select>
+        </div>
+        <div style="margin-top: 1em;">
+          <button id="applySettings">Apply Settings</button>
+        </div>
       </div>
     </div>
   </div>
