@@ -1,0 +1,133 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1em;
+  }
+  
+  header {
+    text-align: center;
+  }
+  
+  .game-board {
+    background: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .letter-display {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
+  }
+  
+  .letter-display span {
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin: 5px;
+    padding: 10px;
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+  }
+  
+  .input-area {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  
+  .input-area input[type="text"] {
+    width: 70%;
+    padding: 0.5em;
+    font-size: 1em;
+  }
+  
+  .input-area button {
+    padding: 0.5em 1em;
+    font-size: 1em;
+    margin-left: 0.5em;
+  }
+  
+  .used-words {
+    margin-top: 1em;
+  }
+  
+  .used-words ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .used-words li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .game-info p {
+    margin: 0.5em 0;
+    text-align: center;
+  }
+  
+  /* Modal styling */
+  .modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .input-area input[type="text"] {
+      width: 60%;
+    }
+    .letter-display span {
+      width: 35px;
+      height: 35px;
+      font-size: 1.2em;
+      line-height: 35px;
+    }
+  }
+  

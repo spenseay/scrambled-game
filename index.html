@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scrambled Word Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Scrambled Word Game</h1>
+    </header>
+    <section class="game-board">
+      <!-- Letter Display Area -->
+      <div id="letterDisplay" class="letter-display"></div>
+      <!-- Word Input Area -->
+      <div class="input-area">
+        <input type="text" id="wordInput" placeholder="Type your word here..." autofocus />
+        <button id="submitWord">Submit Word</button>
+      </div>
+      <!-- List of submitted words -->
+      <div class="used-words">
+        <h2>Your Words</h2>
+        <ul id="wordsList"></ul>
+      </div>
+      <!-- Game Information -->
+      <div class="game-info">
+        <p id="lettersRemaining"></p>
+        <p id="gameScore"></p>
+        <p id="timerDisplay"></p>
+      </div>
+    </section>
+    <footer>
+      <button id="showInstructions">Instructions</button>
+      <button id="showSettings">Settings</button>
+    </footer>
+    
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeInstructions">&times;</span>
+        <h2>How to Play</h2>
+        <p>
+          Each day you’re given a new set of letters. Form valid English words using the letters.
+          The goal is to use ALL letters in as few words as possible. Each letter may only be used once per submission (unless it appears more than once).
+        </p>
+      </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeSettings">&times;</span>
+        <h2>Settings</h2>
+        <p>
+          Configure letter count and difficulty levels here. (For example: Easy – 15 letters, Medium – 20 letters, Hard – 25 letters.)
+        </p>
+        <!-- Additional settings can be added here -->
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
