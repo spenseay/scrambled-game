@@ -1,4 +1,48 @@
-.play-again-btn {
+/* Custom notifications */
+.notification {
+    background: #134074; /* Blue */
+    color: #eef4ed; /* Off-white */
+    border-radius: 8px;
+    padding: 1em;
+    margin: 1em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    max-height: 100px;
+    overflow: hidden;
+  }
+  
+  .notification.success {
+    background: #2d6a4f; /* Green */
+  }
+  
+  .notification.error {
+    background: #9e2a2b; /* Red */
+  }
+  
+  .notification.hidden {
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+  
+  .close-notification {
+    background: none;
+    border: none;
+    color: #8da9c4; /* Light blue-gray */
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0.2em 0.5em;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+  }
+  
+  .close-notification:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }.play-again-btn {
     background: #8da9c4; /* Light blue-gray */
     color: #0b2545; /* Dark navy */
     border: none;
@@ -71,7 +115,7 @@
     color: #0b2545; /* Dark navy */
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
   }
   
   .letter-display span:hover {
@@ -79,9 +123,37 @@
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
   }
   
+  /* Animation for letter removal */
+  @keyframes letterFadeOut {
+    from { 
+      transform: scale(1);
+      opacity: 1;
+    }
+    to { 
+      transform: scale(0.8);
+      opacity: 0;
+    }
+  }
+  
+  /* Animation for letter addition */
+  @keyframes letterFadeIn {
+    from { 
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to { 
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
   .input-area {
     text-align: center;
     margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
   }
   
   .input-area input[type="text"] {
