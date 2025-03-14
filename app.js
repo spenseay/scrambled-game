@@ -1,27 +1,32 @@
 /* app.js */
 
 /*
-  Game Configuration (excluding the dictionary)
+  Game Configuration
 */
 const config = {
-    letterCount: 20, // Configurable: 15-25
-    vowels: 'AEIOU',
-    consonants: 'BCDFGHJKLMNPQRSTVWXYZ',
-    letterFrequency: {
-      A: 8.17, B: 1.49, C: 2.78, D: 4.25, E: 12.70, F: 2.23,
-      G: 2.02, H: 6.09, I: 6.97, J: 0.15, K: 0.77, L: 4.03,
-      M: 2.41, N: 6.75, O: 7.51, P: 1.93, Q: 0.10, R: 5.99,
-      S: 6.33, T: 9.06, U: 2.76, V: 0.98, W: 2.36, X: 0.15,
-      Y: 1.97, Z: 0.07
-    }
+    minWords: 3, // Minimum number of words to use for puzzle
+    maxWords: 5, // Maximum number of words to use for puzzle
+    minLetterCount: 10, // Minimum number of unique letters
+    maxLetterCount: 20  // Maximum number of unique letters
   };
   
   // Our global dictionary Set, loaded from words_alpha.txt
   let dictionary = new Set();
+  // Common words for creating puzzles
+  let commonWords = [];
   
-  // Load the dictionary from the text file
+  // Our solution (the words we used to create the puzzle)
+  let solutionWords = [];
+  let solutionLetterCount = 0;
+  
+  // Game state variables
+  let dailyLetters = [];
+  let usedWords = [];
+  let wordLettersMap = new Map(); // Map to store which letters each word uses
+  
+  // Load the dictionary and common words
   function fetchDictionary() {
-    return fetch('words_alpha.txt')
+    const dictPromise = fetch('words_alpha.txt')
       .then(response => {
         if (!response.ok) {
           throw new Error(`Failed to load dictionary file: ${response.status}`);
@@ -33,64 +38,136 @@ const config = {
         const lines = text.split('\n').map(word => word.trim().toUpperCase());
         dictionary = new Set(lines);
         console.log(`Dictionary loaded with ${dictionary.size} words.`);
+      });
+      
+    const commonWordsPromise = fetch('top_thousand_words.txt')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load common words file: ${response.status}`);
+        }
+        return response.text();
       })
+      .then(text => {
+        // Each line is one word; convert to uppercase
+        commonWords = text.split('\n')
+          .map(word => word.trim().toUpperCase())
+          .filter(word => word.length >= 3 && word.length <= 8); // Filter to reasonable word lengths
+        console.log(`Common words loaded: ${commonWords.length}`);
+      });
+      
+    return Promise.all([dictPromise, commonWordsPromise])
       .catch(error => {
-        console.error('Error fetching dictionary:', error);
-        alert('Failed to load dictionary. Please try again later.');
+        console.error('Error fetching files:', error);
+        alert('Failed to load necessary files. Please try again later.');
       });
   }
   
-  let dailyLetters = [];
-  let usedWords = [];
-  let wordLettersMap = new Map(); // Map to store which letters each word uses
-  
   /*
-    Utility function to pick a random letter (weighted by frequency).
+    Generate the daily letter set from 4-6 common words.
+    This ensures the puzzle is solvable.
   */
-  function getRandomLetter(weighted = true) {
-    const letters = Object.keys(config.letterFrequency);
-    if (!weighted) {
-      return letters[Math.floor(Math.random() * letters.length)];
+  function generateDailyLetters() {
+    // Choose a random number of words between min and max
+    const numWords = Math.floor(Math.random() * 
+      (config.maxWords - config.minWords + 1)) + config.minWords;
+    
+    // Clear previous solution
+    solutionWords = [];
+    
+    // Map to track letter frequency
+    const letterFrequencyMap = new Map();
+    
+    // Select random words from our common words
+    while (solutionWords.length < numWords) {
+      // Get a random word from common words
+      const randomIndex = Math.floor(Math.random() * commonWords.length);
+      const word = commonWords[randomIndex];
+      
+      // Skip if we've already chosen this word
+      if (solutionWords.includes(word)) continue;
+      
+      // Add word to our solution
+      solutionWords.push(word);
+      
+      // Count letters in this word
+      for (const letter of word) {
+        const currentCount = letterFrequencyMap.get(letter) || 0;
+        letterFrequencyMap.set(letter, currentCount + 1);
+      }
     }
     
-    const weightedPool = [];
-    letters.forEach(letter => {
-      const frequency = config.letterFrequency[letter];
-      const count = Math.ceil(frequency * 10); // Scale frequency for pool size
+    // Convert the Map to an array of letters with proper frequency
+    let letters = [];
+    letterFrequencyMap.forEach((count, letter) => {
       for (let i = 0; i < count; i++) {
-        weightedPool.push(letter);
+        letters.push(letter);
       }
     });
     
-    return weightedPool[Math.floor(Math.random() * weightedPool.length)];
-  }
-  
-  /*
-    Generate the daily letter set.
-    Ensures a minimum number of vowels (3).
-  */
-  function generateDailyLetters() {
-    let letters = [];
-    let vowelCount = 0;
-    
-    // Ensure at least 3 vowels
-    while (vowelCount < 3) {
-      const vowel = config.vowels[Math.floor(Math.random() * config.vowels.length)];
-      letters.push(vowel);
-      vowelCount++;
+    // Check if we have an appropriate number of letters
+    if (letters.length < config.minLetterCount) {
+      // If too few letters, try again
+      return generateDailyLetters();
     }
     
-    // Fill the rest with weighted random letters
-    while (letters.length < config.letterCount) {
-      let letter = getRandomLetter();
-      letters.push(letter);
-      if (config.vowels.includes(letter)) {
-        vowelCount++;
-      }
+    if (letters.length > config.maxLetterCount) {
+      // If too many letters, truncate the list
+      // Note: This could make the puzzle unsolvable with our exact words,
+      // so we'll need to adjust our solution words accordingly
+      letters = letters.slice(0, config.maxLetterCount);
+      
+      // Recalculate which solution words are still possible
+      adjustSolutionWords(letters);
     }
+    
+    // Store the number of letters in our solution
+    solutionLetterCount = letters.length;
+    
+    // Log our solution for debugging
+    console.log("Solution words:", solutionWords);
+    console.log("Letter count:", solutionLetterCount);
+    console.log("Available letters:", letters);
     
     // Shuffle the letters
     return letters.sort(() => Math.random() - 0.5);
+  }
+  
+  /*
+    Adjust solution words if we had to truncate the letter list
+  */
+  function adjustSolutionWords(availableLetters) {
+    // Create a copy of our available letters
+    let remainingLetters = [...availableLetters];
+    let validSolutionWords = [];
+    
+    // Check each word if it can be formed with the available letters
+    for (const word of solutionWords) {
+      let canFormWord = true;
+      let tempLetters = [...remainingLetters];
+      
+      // Check if all letters in the word are available
+      for (const letter of word) {
+        const index = tempLetters.indexOf(letter);
+        if (index === -1) {
+          canFormWord = false;
+          break;
+        }
+        tempLetters.splice(index, 1);
+      }
+      
+      if (canFormWord) {
+        validSolutionWords.push(word);
+        
+        // Remove the used letters from remainingLetters
+        for (const letter of word) {
+          const index = remainingLetters.indexOf(letter);
+          remainingLetters.splice(index, 1);
+        }
+      }
+    }
+    
+    // Update our solution words
+    solutionWords = validSolutionWords;
   }
   
   /*
@@ -254,8 +331,46 @@ const config = {
   function checkGameCompletion() {
     if (dailyLetters.length === 0) {
       const gameScore = document.getElementById('gameScore');
-      gameScore.innerHTML = `<div class="game-completed">Completed! You used ${usedWords.length} word(s) to use all letters.</div>`;
-      alert(`Congratulations! You've used all the letters in ${usedWords.length} word(s).`);
+      
+      // Create the completion message
+      const completionDiv = document.createElement('div');
+      completionDiv.className = 'game-completed';
+      
+      // Create comparison content
+      const playerCount = usedWords.length;
+      const solutionCount = solutionWords.length;
+      
+      // Determine the comparison message
+      let comparisonMsg = '';
+      if (playerCount < solutionCount) {
+        comparisonMsg = `Amazing! You found a better solution than ours using fewer words!`;
+      } else if (playerCount === solutionCount) {
+        comparisonMsg = `Great job! You matched our solution perfectly!`;
+      } else {
+        comparisonMsg = `Well done! Our solution used ${solutionCount} words, but you used ${playerCount}.`;
+      }
+      
+      // Build full completion message
+      completionDiv.innerHTML = `
+        <h3>Puzzle Complete!</h3>
+        <p>You used ${playerCount} word(s) to solve the puzzle.</p>
+        <p>${comparisonMsg}</p>
+        <div class="solution-words">
+          <h4>Our Solution:</h4>
+          <p>${solutionWords.join(', ')}</p>
+        </div>
+        <button id="playAgainBtn" class="play-again-btn">Play Again</button>
+      `;
+      
+      // Replace score with completion message
+      gameScore.innerHTML = '';
+      gameScore.appendChild(completionDiv);
+      
+      // Add event listener to the Play Again button
+      document.getElementById('playAgainBtn').addEventListener('click', resetGame);
+      
+      // Show a small alert to notify completion
+      alert(`Congratulations! You've used all the letters in ${playerCount} word(s).`);
     }
   }
   
@@ -321,6 +436,7 @@ const config = {
     dailyLetters = [];
     usedWords = [];
     wordLettersMap.clear();
+    solutionWords = [];
     
     // Generate new letters
     dailyLetters = generateDailyLetters();
@@ -328,7 +444,8 @@ const config = {
     // Clear the words list
     document.getElementById('wordsList').innerHTML = '';
     
-    // Reset the score
+    // Reset the score display
+    document.getElementById('gameScore').innerHTML = 'Words: 0';
     updateScore();
     
     // Render the new letters
@@ -349,6 +466,14 @@ const config = {
       
       // Set up modals and event listeners
       setupModals();
+      
+      // Add a reset game button to footer
+      const footer = document.querySelector('footer');
+      const resetButton = document.createElement('button');
+      resetButton.id = 'resetGame';
+      resetButton.innerText = 'New Puzzle';
+      resetButton.addEventListener('click', resetGame);
+      footer.appendChild(resetButton);
     });
   }
   

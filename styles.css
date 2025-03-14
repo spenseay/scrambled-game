@@ -1,6 +1,24 @@
-/* styles.css */
-
-body {
+.play-again-btn {
+    background: #8da9c4; /* Light blue-gray */
+    color: #0b2545; /* Dark navy */
+    border: none;
+    border-radius: 6px;
+    padding: 0.8em 1.5em;
+    margin-top: 1.5em;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .play-again-btn:hover {
+    background: #eef4ed; /* Off-white */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  }/* styles.css */
+  
+  body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #0b2545; /* Dark navy */
     margin: 0;
@@ -218,16 +236,47 @@ body {
   .game-completed {
     background: #134074; /* Blue */
     border-radius: 8px;
-    padding: 1em;
+    padding: 1.5em;
     margin-top: 1em;
     text-align: center;
     color: #eef4ed; /* Off-white */
     animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .game-completed h3 {
+    color: #8da9c4; /* Light blue-gray */
+    font-size: 1.6em;
+    margin-top: 0;
+    margin-bottom: 0.8em;
+  }
+  
+  .game-completed p {
+    margin: 0.7em 0;
+    font-size: 1.1em;
+  }
+  
+  .solution-words {
+    margin-top: 1.5em;
+    padding: 1em;
+    border-radius: 6px;
+    background: rgba(19, 49, 92, 0.6); /* Slightly lighter blue */
+  }
+  
+  .solution-words h4 {
+    color: #8da9c4; /* Light blue-gray */
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+  
+  .solution-words p {
+    font-weight: bold;
+    font-size: 1.2em;
   }
   
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   /* Responsive Design */
