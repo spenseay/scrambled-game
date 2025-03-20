@@ -5104,7 +5104,6 @@ aztec
 azure
 azurite
 azurites
-b
 ba
 baa
 baba
@@ -9938,7 +9937,6 @@ byword
 bywords
 byzantine
 byzantium
-c
 ca
 cab
 cabal
@@ -18032,7 +18030,6 @@ czechoslovakian
 czechoslovakians
 czechoslovaks
 czechs
-d
 dab
 dabbed
 dabbing
@@ -18397,11 +18394,6 @@ dazzlers
 dazzles
 dazzling
 dazzlingly
-dbe
-dbes
-dcvos
-ddss
-ddt
 de
 deacon
 deaconess
@@ -23618,7 +23610,6 @@ dysphasia
 dysprosium
 dystrophic
 dystrophy
-e
 each
 eadem
 eager
@@ -27228,7 +27219,6 @@ eyrie
 eyries
 ezekiel
 ezra
-f
 fa
 faber
 faberge
@@ -30783,7 +30773,6 @@ fuzziness
 fuzzy
 fy
 fylingdale
-g
 gab
 gabardine
 gabardines
@@ -33459,7 +33448,6 @@ gyrostabilisers
 gyrostabilizer
 gyrostabilizers
 gyves
-h
 ha
 haas
 habakkuk
@@ -39998,7 +39986,6 @@ ivy
 ivybridge
 ix
 izvestia
-j
 jab
 jabbed
 jabber
@@ -40805,7 +40792,6 @@ juxtaposes
 juxtaposing
 juxtaposition
 juxtapositions
-k
 ka
 kabob
 kabobs
@@ -41503,7 +41489,6 @@ kymographs
 kyoto
 kyth
 kyushu
-l
 la
 lab
 label
@@ -42140,7 +42125,6 @@ lazing
 lazuli
 lazy
 lazybones
-lc
 le
 lea
 leach
@@ -43257,11 +43241,9 @@ llanrwst
 llanstephan
 llanwrtyd
 llb
-lld
 lleyn
 lloyd
 lloyds
-lm
 lo
 load
 loaded
@@ -44025,7 +44007,6 @@ lysergic
 lysine
 lysol
 lytham
-m
 ma
 maastricht
 mabel
@@ -48609,8 +48590,6 @@ muzzled
 muzzles
 muzzling
 muzzy
-mx
-my
 myalgia
 myasthenia
 mycelia
@@ -48679,8 +48658,6 @@ mythologists
 mythology
 mythomaniac
 myths
-n
-naafi
 nab
 nabbed
 nabbing
@@ -50160,7 +50137,6 @@ nymphomania
 nymphomaniac
 nymphomaniacs
 nymphs
-o
 oaf
 oafish
 oafs
@@ -52384,7 +52360,6 @@ oysters
 oz
 ozone
 ozonosphere
-p
 pa
 pablo
 pabulum
@@ -53577,8 +53552,6 @@ payroll
 payrolls
 pays
 paz
-pc
-pdsa
 pe
 pea
 peabody
@@ -58936,21 +58909,14 @@ pythagoras
 pythagorean
 python
 pythons
-q
 qantas
 qatar
-qc
 qdos
 qed
-ql
-qls
 qmon
 qom
 qpac
 qptr
-qram
-qt
-qtyp
 qua
 quaalude
 quaaludes
@@ -59384,7 +59350,6 @@ quotidian
 quotient
 quotients
 quoting
-r
 ra
 rabat
 rabbet
@@ -64276,7 +64241,6 @@ ryde
 rye
 ryedale
 ryes
-s
 saab
 saabs
 saar
@@ -73431,7 +73395,6 @@ systole
 systoles
 systolic
 szechwan
-t
 ta
 tab
 tabard
@@ -77639,7 +77602,6 @@ tythes
 tything
 tzar
 tzars
-u
 uberrima
 ubi
 ubiquitous
@@ -80311,7 +80273,6 @@ uxoriously
 uzbek
 uzbekistan
 uzbeks
-v
 vac
 vacancies
 vacancy
@@ -81683,7 +81644,6 @@ vultures
 vulva
 vulvas
 vying
-w
 wabble
 wackier
 wackiest
@@ -83647,7 +83607,6 @@ wynn
 wyoming
 wysiwyg
 wyvern
-x
 xebec
 xebecs
 xenodochium
@@ -83666,35 +83625,15 @@ xeroxed
 xeroxes
 xeroxing
 xi
-xii
-xiii
-xiv
-xix
 xmas
 xmases
 xu
-xv
-xvi
-xvii
-xviii
-xx
-xxi
-xxii
-xxiii
-xxiv
-xxix
-xxv
-xxvi
-xxvii
-xxviii
-xxx
 xylem
 xylography
 xylophone
 xylophones
 xylophonist
 xylophonists
-y
 yacht
 yachted
 yachter
@@ -83923,10 +83862,6 @@ yummiest
 yummy
 yuppie
 yuppies
-yvette
-yvonne
-ywca
-z
 zabaglione
 zabagliones
 zachary
