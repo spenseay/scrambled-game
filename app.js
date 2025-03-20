@@ -942,7 +942,7 @@ function handleLetterTyping(event) {
       });
       
       // Show welcome notification
-      showNotification('Welcome to Scrambled Word Game! Create words using the available letters.', 'success');
+      showNotification('Welcome to Scrambled! Create words using the available letters.', 'success');
       
       // Debug: Show game state in console
       setTimeout(showGameState, 1000);
